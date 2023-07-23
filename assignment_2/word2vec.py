@@ -151,6 +151,8 @@ def negSamplingLossAndGradient(
     ### Please use your implementation of sigmoid in here.
 
     ### END YOUR CODE
+    
+    
 
     return loss, gradCenterVec, gradOutsideVecs
 
@@ -195,9 +197,38 @@ def skipgram(currentCenterWord, windowSize, outsideWords, word2Ind,
     gradOutsideVectors = np.zeros(outsideVectors.shape)
 
     ### YOUR CODE HERE (~8 Lines)
+    #centerWordVec,
+    #outsideWordIdx,
+    #outsideVectors,
+    #dataset
+
+    # take the the center vector from the matrix
+    center_word_idx = word2Ind[currentCenterWord]
+    center_word_vec = centerWordVectors[center_word_idx]
+    i = 0
+    for outside_word in outsideWords:
+
+        outside_word_idx = word2Ind[outside_word]
+        step_loss, grad_center, grad_outside =word2vecLossAndGradient(center_word_vec,
+                                                                      outside_word_idx,
+                                                                      outsideVectors,
+                                                                      dataset)
+
+        loss += step_loss
+
+        # grad for only our center vector
+        gradCenterVecs[center_word_idx] += grad_center
+        
+        # grad_outside is a matrix with the gradents
+        gradOutsideVectors += grad_outside
+       
+
+
+
+
 
     ### END YOUR CODE
-    
+  
     return loss, gradCenterVecs, gradOutsideVectors
 
 
