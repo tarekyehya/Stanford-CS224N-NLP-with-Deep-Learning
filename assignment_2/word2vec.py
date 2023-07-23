@@ -65,11 +65,11 @@ def naiveSoftmaxLossAndGradient(
     ### Please use the provided softmax function (imported earlier in this file)
     ### This numerically stable implementation helps you avoid issues pertaining
     ### to integer overflow. 
-
     # follow the shape convention  
 
     # take softmax for every word, where centerWordVec is the center and every word treat as the outside word
     y_hat = softmax(np.dot(outsideVectors, centerWordVec))
+    # shape -> 
 
     # take the lose for the outsideWordIdx
     loss = -np.log(y_hat[outsideWordIdx])
@@ -77,7 +77,8 @@ def naiveSoftmaxLossAndGradient(
     # 
     delta_y_hat = y_hat.copy()
 
-    #( y_hat - y hat ) --> 1 in the index of the world and zeros every where
+    #( y_hat - y) --> 1 in the index of the world and zeros every where
+    # y is one hot vector
     delta_y_hat[outsideWordIdx] -= 1 
 
     # gradent =  U.T (y_hat - y)
@@ -131,7 +132,22 @@ def negSamplingLossAndGradient(
     indices = [outsideWordIdx] + negSampleWordIndices
 
     ### YOUR CODE HERE (~10 Lines)
+    k_part = sigmoid(np.dot(outsideVectors[negSampleWordIndices], centerWordVec))
+    out_center_sigmoid = sigmoid(np.dot(outsideVectors[outsideWordIdx] , centerWordVec))
 
+    loss = - np.log(out_center_sigmoid) - np.sum(np.log(1-k_part))
+    gradCenterVec = (out_center_sigmoid - 1) * outsideVectors[outsideWordIdx] + np.sum((k_part.reshape(-1,1))  * outsideVectors[negSampleWordIndices] ,axis=0)
+
+    # now we need calculate grades for all outvectors
+    # use the equation with every vec of the outSideVecs
+    gradOutsideVecs = np.zeros_like(outsideVectors)
+    gradOutsideVecs[outsideWordIdx] = (out_center_sigmoid-1)*centerWordVec
+    for i, j in enumerate(negSampleWordIndices):
+        gradOutsideVecs[j] +=( k_part[i]) *centerWordVec
+
+
+
+    ### Please use your implementation of sigmoid in here.
     ### Please use your implementation of sigmoid in here.
 
     ### END YOUR CODE
