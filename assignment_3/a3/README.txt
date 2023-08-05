@@ -32,3 +32,17 @@ If you would like to instead create a new environment for this assignment, pleas
 # To deactivate an active environment, use
     
     conda deactivate
+
+
+I will talk about a project and my last assignment at NLP with deep learning Stanford (224n)
+First as unusual I will start with the assignment, implementing the dependency parsing transition with neural network depend on the original paper,
+the framework split into two steps the first is the algorithm of transition dependency and the second in how to train a neural network to predict the next step in this algorithm depend on a data prepared with human,
+The assignment has alot of challenges but I love to highlight this step,
+Every sentence is an example to train, we need to store to every sentence a buffer, stack and dependencies,
+and on every epoch of the Train the state of all these is changed,
+the challenge that I want to highlight how to store these for every sentence, 
+if we store all of them in a list of dictionary will be a good but every train the state for all ( batch or mini batch ) will changed and we need to treat with code with all thesis, 
+but the best solution is make a class for the sentence and initialize the buffer, etc., and the methods needed to the algorithm ( make the changing in the state Esey ),
+list if objects and the Train with byTourch.
+
+
